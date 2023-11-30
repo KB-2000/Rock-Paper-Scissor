@@ -30,6 +30,7 @@ let scores = {
     user: 0,
     pc: 0
 }
+// Update scores from local storage on page load 
 window.onload = ()=>{
     if(localStorage.getItem("scores")){
         scores = JSON.parse(localStorage.getItem("scores"))
@@ -37,47 +38,78 @@ window.onload = ()=>{
         userScore.innerHTML = scores.user;
     }
 }
-
-
-function showRules() {
-    rulesModal.style.display = "block";
+// Display rules button 
+function Rules(action) {
+    action==='show'? rulesModal.style.display = "block" :  rulesModal.style.display = "none";;
 }
 
-function hideRules(){
-    rulesModal.style.display = "none";
-}
-
-
-const arr = ['rock','paper','scissor'];
+ 
+const arr = ['rock','paper','scissor']; // pc choice
+// Game start 
 function startGame(userpicked){
-    
-   const pcPicked = arr[Math.floor(Math.random()*3)];
-         
+    const pcPicked = arr[Math.floor(Math.random()*3)];    //  pc choice 
+
     gameScreen.style.display = "none";
     line1.style.display = "none";
     line2.style.display = "none";
     resultScreen.style.display = "flex";
     resultUserImg.className = '';
     resultPcImg.className = '';
-    console.log(userpicked + " " + pcPicked)
+
+   //  User win
+
     if((userpicked==='rock' && pcPicked==='scissor') || (userpicked==='paper' && pcPicked==='rock') || (userpicked==='scissor' && pcPicked==='paper')){
 
-        resultWinHeading.innerHTML = "YOU WON!";
+         resultWinHeading.innerHTML = "YOU WON!";
+         resultUserImg.src = 'assets/' + userpicked + '.png';
+         resultPcImg.src = 'assets/' + pcPicked + '.png';
+
+         (userpicked==='paper') ? resultUserImg.classList.add(userpicked + '_img_result') : resultUserImg.classList.add(userpicked + '_img');  
+         (pcPicked==='paper') ? resultPcImg.classList.add(pcPicked + '_img_result') : resultPcImg.classList.add(pcPicked + '_img');
+         
+
+         focusOnUserWinner();
+         userScore.innerHTML = ++scores.user;
+
+    }else if(userpicked===pcPicked){     // Tie Up
+        
+         resultWinHeading.innerHTML = "TIE UP!";
          resultUserImg.src = 'assets/' + userpicked + '.png' 
+         resultPcImg.src = 'assets/' + pcPicked + '.png'
+
          if(userpicked==='paper'){
             resultUserImg.classList.add(userpicked + '_img_result')
-         }else{
-            resultUserImg.classList.add(userpicked + '_img')
-         }
-        
-
-         resultPcImg.src = 'assets/' + pcPicked + '.png'
-         if(pcPicked==='paper'){
             resultPcImg.classList.add(pcPicked + '_img_result')
          }else{
+            resultUserImg.classList.add(userpicked + '_img')
             resultPcImg.classList.add(pcPicked + '_img')
          }
+        
+         removeFocus();
 
+         
+    } else {   // PC win
+    
+         resultWinHeading.innerHTML = "YOU LOST!";
+         resultUserImg.src = 'assets/' + userpicked + '.png';
+         resultPcImg.src = 'assets/' + pcPicked + '.png';
+
+         (userpicked==='paper') ? resultUserImg.classList.add(userpicked + '_img_result') : resultUserImg.classList.add(userpicked + '_img');
+         (pcPicked==='paper') ? resultPcImg.classList.add(pcPicked + '_img_result') : resultPcImg.classList.add(pcPicked + '_img');
+         
+         focusOnPcWinner();
+         comScore.innerHTML = ++scores.pc;
+    }
+
+   //  Display next button 
+    (scores.user > scores.pc) ? nextBtn.style.display = "block": nextBtn.style.display = "none";
+    
+    // Saving scores in local storage
+    localStorage.setItem("scores",JSON.stringify(scores))
+    console.log(localStorage.getItem("scores"))
+}
+
+function focusOnUserWinner(){
          userBox1.classList.add('winner-box-1')
          userBox2.classList.add('winner-box-2')
          userBox3.classList.add('winner-box-3')
@@ -85,50 +117,9 @@ function startGame(userpicked){
          pcBox1.classList.remove('winner-box-1')
          pcBox2.classList.remove('winner-box-2')
          pcBox3.classList.remove('winner-box-3')
-         userScore.innerHTML = ++scores.user;
+}
 
-    }else if(userpicked===pcPicked){
-        
-        resultWinHeading.innerHTML = "TIE UP!";
-         resultUserImg.src = 'assets/' + userpicked + '.png' 
-         if(userpicked==='paper'){
-            resultUserImg.classList.add(userpicked + '_img_result')
-         }else{
-            resultUserImg.classList.add(userpicked + '_img')
-         }
-        
-
-         resultPcImg.src = 'assets/' + pcPicked + '.png'
-         if(pcPicked==='paper'){
-            resultPcImg.classList.add(pcPicked + '_img_result')
-         }else{
-            resultPcImg.classList.add(pcPicked + '_img')
-         }
-
-         userBox1.classList.remove('winner-box-1')
-         userBox2.classList.remove('winner-box-2')
-         userBox3.classList.remove('winner-box-3')
-
-         pcBox1.classList.remove('winner-box-1')
-         pcBox2.classList.remove('winner-box-2')
-         pcBox3.classList.remove('winner-box-3')
-    }else {
-    
-        resultWinHeading.innerHTML = "YOU LOST!";
-         resultUserImg.src = 'assets/' + userpicked + '.png' 
-         if(userpicked==='paper'){
-            resultUserImg.classList.add(userpicked + '_img_result')
-         }else{
-            resultUserImg.classList.add(userpicked + '_img')
-         }
-        
-
-         resultPcImg.src = 'assets/' + pcPicked + '.png'
-         if(pcPicked==='paper'){
-            resultPcImg.classList.add(pcPicked + '_img_result')
-         }else{
-            resultPcImg.classList.add(pcPicked + '_img')
-         }
+function focusOnPcWinner(){
          userBox1.classList.remove('winner-box-1')
          userBox2.classList.remove('winner-box-2')
          userBox3.classList.remove('winner-box-3')
@@ -136,15 +127,16 @@ function startGame(userpicked){
          pcBox1.classList.add('winner-box-1')
          pcBox2.classList.add('winner-box-2')
          pcBox3.classList.add('winner-box-3')
-         comScore.innerHTML = ++scores.pc;
-    }
-    if(scores.user > scores.pc){
-        nextBtn.style.display = "block";
-    }else{
-        nextBtn.style.display = "none";
-    }
-    localStorage.setItem("scores",JSON.stringify(scores))
-    console.log(localStorage.getItem("scores"))
+}
+
+function removeFocus(){
+   userBox1.classList.remove('winner-box-1')
+   userBox2.classList.remove('winner-box-2')
+   userBox3.classList.remove('winner-box-3')
+
+   pcBox1.classList.remove('winner-box-1')
+   pcBox2.classList.remove('winner-box-2')
+   pcBox3.classList.remove('winner-box-3')
 }
 
 function playAgain() {
@@ -157,16 +149,16 @@ function playAgain() {
     rulesBtn.style.display = "block";
     gameScreen.style.display = "block";
 }
-
+// Show won Game Page
 function showHurray(){
     scoreBoard.style.display = "none"
     gameScreen.style.display = "none";
     resultScreen.style.display = "none";
     line1.style.display = "none";
     line2.style.display = "none";
+    nextBtn.style.display = "none";
 
     rulesBtn.style.display = "block";
-    nextBtn.style.display = "none";
     wonGame.style.display = "flex";
 
 }
