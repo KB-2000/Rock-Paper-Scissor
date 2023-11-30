@@ -40,7 +40,7 @@ window.onload = ()=>{
 }
 // Display rules button 
 function Rules(action) {
-    action==='show'? rulesModal.style.display = "block" :  rulesModal.style.display = "none";;
+    action==='show'? rulesModal.style.display = "block" :  rulesModal.style.display = "none";
 }
 
  
