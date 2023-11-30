@@ -9,7 +9,6 @@
 </head>
 <body>
     <!-- Score Board -->
-
     <div class="score_board">
         <div class="title">
             <p>ROCK</p>
@@ -59,7 +58,7 @@
         <div class="text">
             <h1 class="result_win_heading">YOU WON !</h1>
             <P>AGAINST PC</P>
-            <button onclick="playAgain()">PLAY AGAIN</button>
+            <button onclick="playAgain()" class="play_again">PLAY AGAIN</button>
         </div>
         <div class="right">
         <h1>PC PICKED</h1>
@@ -77,13 +76,13 @@
 
     <!-- Last two buttons  -->
     <div class="buttons">
-        <button onclick="showRules()" id="rules_btn" class="rules_btn"> RULES</button>
+        <button onclick="Rules('show')" id="rules_btn" class="rules_btn"> RULES</button>
         <button onclick="showHurray()" class="next_btn"> NEXT</button>
     </div>
 
     <!-- rules modal screen  -->
     <div id="rules_modal" class="rules_modal">
-        <button onclick="hideRules()" class="close">X</button>
+        <button onclick="Rules()" class="close">X</button>
         <h1>GAME RULES</h1>
         <ol>
             <li>Rock beats scissors, scissors beat paper, and paper beats rock.</li>
