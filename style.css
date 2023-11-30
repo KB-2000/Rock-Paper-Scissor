@@ -249,7 +249,7 @@ hr {
 }
 @keyframes moveModal {
     0% {
-        left:80%;
+        left:70%;
     }
     100% {
         left:75%;
