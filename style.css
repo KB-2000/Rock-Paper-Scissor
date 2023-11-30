@@ -349,6 +349,11 @@ li::marker {
     border: none;
     cursor: pointer;
     margin-top:2rem;
+    transition: color 0.2s;
+}
+.play_again:hover{
+    background-color: #6B6B6B;
+    color: #FFF;
 }
 .rules_btn_won {
     border-radius: 10px;
